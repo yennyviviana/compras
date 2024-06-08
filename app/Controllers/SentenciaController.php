@@ -1,7 +1,7 @@
 <?php
 
 class SentenciaController {
-    private $modelo;
+    private  $modelo;
 
     public function __construct($modelo) {
         $this->modelo = $modelo;
@@ -23,8 +23,9 @@ class SentenciaController {
             return $resultado;
         } catch (Exception $e) {
             // Manejo de errores
-            return false;
+            return  false;
         }
     }
 }
+
 ?>

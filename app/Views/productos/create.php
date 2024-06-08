@@ -9,9 +9,7 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Modulo de AUGE compras.</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!---<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
     
-
 </head>
 <body>
 
@@ -72,83 +70,32 @@
         .btn:hover {
             background-color: #0056b3;
         }
-
-
-        .table {
-    font-size: 14px;
-}
-
-.table th,
-.table td {
-    padding: 10px;
-}
-
-.table th {
-    text-align: center;
-}
-
-.table tbody tr:hover {
-    background-color: #f5f5f5;
-}
-
-.table tbody tr td:last-child {
-    text-align: center;
-}
-
-.btn-editar,
-.btn-borrar {
-    padding: 5px 10px;
-    margin-right: 5px;
-}
-
-.btn-editar {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-}
-
-.btn-borrar {
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-}
-
-
     </style>
 </head>
 <body>
-    <div class="panel">
-        <div class="column">
-            <h2>Módulo de Compras</h2>
-            <ul class="nav">
-                <li><i class="fas fa-plus icon"></i><a href="create.php">Nuevo Proveedor</a></li>
-                <li><i class="fas fa-edit icon"></i><a href="list.php">Insertar Proveedor</a></li>
-                <li><i class="fas fa-trash-alt icon"></i><a href="delete.php">Eliminar Proveedor</a></li>
-            </ul>
-        </div>
-        <div class="column">
-            <button class="btn" name="botonc" type="button" onclick="document.location='list.php?da=2'">
-                <i class="fas fa-plus"></i> Ingresar nuevo proveedor
-            </button>
-        </div>
+
+<div class="panel">
+    <div class="column">
+        <h2>Módulo de Compras</h2>
+        <ul class="nav">
+            <li><i class="fas fa-plus icon"></i><a href="list.php?da=2">Nuevo Producto</a></li>
+            
+        </ul>
     </div>
+</div>
 
-    <table class="table table-striped table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th>ID</th>
-            <th>Nombre de la Empresa</th>
-            <th>Dirección</th>
-            <th>Email</th>
-            <th>Teléfono</th>
-            <th>Categorías de Productos</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>Archivo Adjunto</th>
-            <th>Acciones</th>
-        </tr>
 
-		
+    <table class="table">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>Precio</th>
+      <th>Categoria </th>
+      <th></th>
+    </tr>
+		        
     </thead>
     <tbody>
         <?php
@@ -166,7 +113,7 @@
         }
 
         // Consulta utilizando MySQLi
-        $consulta = "SELECT * FROM proveedores ORDER BY  id_proveedor";
+        $consulta = "SELECT * FROM productos ORDER BY  id_producto";
         $resultados = $conexion->query($consulta);
 
         // Comprobación de errores en la ejecución de la consulta
@@ -175,33 +122,54 @@
         }
 
         // Iterar sobre los resultados y mostrarlos
-        while ($proveedor = $resultados->fetch_assoc()) {
+        while ($producto = $resultados->fetch_assoc()) {
             ?>
             <tr>
-                <td><?php echo htmlspecialchars($proveedor['id_proveedor']); ?></td>
-                <td><?php echo htmlspecialchars($proveedor['nombre_empresa']); ?></td>
-                <td><?php echo htmlspecialchars($proveedor['direccion']); ?></td>
-                <td><?php echo htmlspecialchars($proveedor['correo_electronico']); ?></td>
-                <td><?php echo htmlspecialchars($proveedor['telefono']); ?></td>
-                <td><?php echo htmlspecialchars($proveedor['categoria_productos']); ?></td>
-                <td><?php echo htmlspecialchars($proveedor['descripcion']); ?></td>
-                <td>$ <?php echo number_format($proveedor['precio'], 2, ',', '.'); ?></td>
-                <td><img src="../../public/img/proveedores/<?php echo $proveedor['archivo']; ?>" width="100" alt=""></td>
-
+                <td><?php echo htmlspecialchars($producto['id_producto']); ?></td>
+                <td><?php echo htmlspecialchars($producto['nombre']); ?></td>
+                <td><?php echo htmlspecialchars($producto['descripcion']); ?></td>
+                <td>$ <?php echo number_format($producto['precio'], 2, ',', '.'); ?></td>
+                <td><?php echo htmlspecialchars($producto['categoria_productos']); ?></td>
+                
+               
                 <td>
-                <a href="edit.php?da=3&lla=<?php echo $proveedor['id_proveedor']; ?>" class="btn btn-primary">
-    <i class="fas fa-edit"></i> Editar
+                  <!-- Botón para editar  -->  
+                <a href="edit.php?da=3&lla=<?php echo $producto['id_producto']; ?>" class="btn btn-primary">
+    <i class="fas fa-pencil-alt"></i> Editar
 </a>
 
-<a href="#" class="btn btn-danger">
-    <i class="fas fa-trash"></i> Borrar
+<!-- Botón de Borrar  -->
+<a href="#" class="btn btn-danger" onclick="borrarProducto(<?php echo $producto['id_producto']; ?>)">
+    <i class="fas fa-trash-alt"></i> Borrar
 </a>
 
 <script>
-function borrarProveedor(id_proveedor) {
+function borrarProducto(id) {
+    if (confirm('¿Está seguro de borrar el producto?')) {
+        // Realizar una petición AJAX para borrar el proveedor
+        var xhr = new XMLHttpRequest();
+        
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Éxito en la eliminación del proveedor
+                    alert('Producto eliminado correctamente.');
+                    // Recargar la página para reflejar los cambios
+                    location.reload();
+                } else {
+                    // Error al eliminar el proveedor
+                    alert('Error al eliminar el producto.');
+                }
+            }
+        };
+        
+        // Configurar la petición AJAX
+        xhr.open('GET', 'delete.php?da=4&lla=' + id, true);
+        // Enviar la petición
+        xhr.send();
+    }
 }
 </script>
-
 
             </tr>
             <?php
@@ -212,7 +180,6 @@ function borrarProveedor(id_proveedor) {
         ?>
     </tbody>
 </table>
-
 
 
 

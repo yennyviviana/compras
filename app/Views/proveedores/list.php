@@ -52,12 +52,14 @@ require_once("../../Models/ProveedorModel.php");
     </style>
 </head>
 <body>
-    <div class="container">
+  
+
+<div class="container">
         <div id="form-background">
             <form action="list.php?da=2" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 <div class="form-group">
                     <label for="nombre_empresa">Nombre de la empresa</label>
-                    <input type="text" id="nombre_empresa" name="nombre_empresa" class="form-control" required placeholder="Ingresar nombre proveedor">
+                    <input type="text" id="nombre_empress" name="nombre_empresa" class="form-control" required placeholder="Ingresar nombre proveedor">
                     <div class="invalid-feedback">Por favor ingrese el nombre del proveedor.</div>
                 </div>
 
@@ -118,3 +120,4 @@ require_once("../../Models/ProveedorModel.php");
     </script>
 </body>
 </html>
+

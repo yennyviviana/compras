@@ -74,7 +74,7 @@ html,body{
 }
 
 .form-background {
-    background-color: hsl(192, 97%, 36%);
+    background-color: hwb(0 23% 76%);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px hwb(251 2% 61% / 0.102);

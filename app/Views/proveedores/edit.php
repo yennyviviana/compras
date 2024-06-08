@@ -1,12 +1,9 @@
-
 <?php
 
 require_once("../../Controllers/ProveedorController.php");
 require_once("../../Models/ProveedorModel.php");
 
-
 // Validar y obtener el valor de 'da' y 'lla' de $_GET
-$dato = isset($_GET['da']) ? intval($_GET['da']) : 0;
 $llave = isset($_GET['lla']) ? intval($_GET['lla']) : 0; 
 if ($llave <= 0) {
     exit("Error: 'lla' debe ser un valor numérico válido.");
@@ -36,68 +33,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $categoria_productos = $_POST['categoria_productos'];
     $descripcion = $_POST['descripcion'];
     $precio = $_POST['precio'];
+    $archivo = $_FILES['archivo'];
 
-    // Construir la consulta SQL de actualización
-    $query = "UPDATE proveedores SET ";
-    $query_params = array();
-    if (!empty($nombre_empresa)) {
-        $query .= "nombre_empresa = ?, ";
-        $query_params[] = $nombre_empresa;
-    }
-    if (!empty($direccion)) {
-        $query .= "direccion = ?, ";
-        $query_params[] = $direccion;
-    }
-    if (!empty($correo_electronico)) {
-        $query .= "correo_electronico = ?, ";
-        $query_params[] = $correo_electronico;
-    }
-    if (!empty($telefono)) {
-        $query .= "telefono = ?, ";
-        $query_params[] = $telefono;
-    }
-    if (!empty($categoria_productos)) {
-        $query .= "categoria_productos = ?, ";
-        $query_params[] = $categoria_productos;
-    }
-    if (!empty($descripcion)) {
-        $query .= "descripcion = ?, ";
-        $query_params[] = $descripcion;
-    }
-    if (!empty($precio)) {
-        $query .= "precio = ?, ";
-        $query_params[] = $precio;
-    }
+    // Crear una instancia del modelo de proveedor
+    $proveedorModel = new ProveedorModel($conexion);
 
-    // Eliminar la última coma y espacio en blanco de la consulta
-    $query = rtrim($query, ", ");
-
-    // Agregar la cláusula WHERE
-    $query .= " WHERE id_proveedor = ?";
-    $query_params[] = $llave;
-
-    // Preparar la consulta SQL de actualización
-    $stmt = $conexion->prepare($query);
-
-    if ($stmt) {
-        // Vincular los parámetros de la consulta preparada
-        $types = str_repeat("s", count($query_params)); // Tipos de datos: todos son cadenas
-        $stmt->bind_param($types . "i", ...$query_params);
-
-        // Ejecutar la consulta preparada
-        $stmt->execute();
-
-        // Verificar si la actualización fue exitosa
-        if ($stmt->affected_rows > 0) {
+    try {
+        // Actualizar el proveedor en la base de datos
+        $resultado = $proveedorModel->actualizarProveedor($llave, $nombre_empresa, $direccion, $correo_electronico, $telefono, $categoria_productos, $descripcion, $precio, $archivo);
+        
+        if ($resultado) {
             echo "Proveedor actualizado correctamente.";
         } else {
             echo "Error al actualizar el proveedor.";
         }
-
-        // Cerrar la consulta preparada
-        $stmt->close();
-    } else {
-        echo "Error al preparar la consulta de actualización.";
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
     }
 }
 
@@ -132,6 +83,7 @@ if ($stmt) {
 
 // No necesitamos manejar el archivo aquí, ya que lo estamos actualizando por separado en el bloque POST
 ?>
+
 
 <!-- Código HTML del formulario -->
 <!DOCTYPE html>
@@ -183,32 +135,28 @@ if ($stmt) {
 
 <div class="container">
     <div id="form-background">
-        <form action="edit.php?da=3&lla=<?php echo $llave; ?>" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
-            <input type="hidden" name="llave" value="<?php echo $llave; ?>">
-
+        <form action="edit.php?lla=<?php echo $llave; ?>" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
             <div class="form-group">
                 <label for="nombre_empresa">Nombre de la empresa</label>
-                <input type="text" id="nombre
-
-_empresa" name="nombre_empresa" value="<?php echo $proveedor['nombre_empresa']; ?>" class="form-control" placeholder="Ingresar nombre proveedor">
+                <input type="text" id="nombre_empresa" name="nombre_empresa" value="<?php echo $proveedor['nombre_empresa']; ?>" class="form-control" placeholder="Ingresar nombre proveedor" required>
                 <div class="invalid-feedback">Por favor ingrese el nombre del proveedor.</div>
             </div>
 
             <div class="form-group">
                 <label for="direccion">Direccion</label>
-                <input type="text" id="direccion" name="direccion" value="<?php echo $proveedor['direccion']; ?>" class="form-control" placeholder="Ingresar direccion">
+                <input type="text" id="direccion" name="direccion" value="<?php echo $proveedor['direccion']; ?>" class="form-control" placeholder="Ingresar direccion" required>
                 <div class="invalid-feedback">Por favor ingrese la direccion.</div>
             </div>
 
             <div class="form-group">
                 <label for="correo_electronico">Correo electrónico</label>
-                <input type="email" id="correo_electronico" name="correo_electronico" value="<?php echo $proveedor['correo_electronico']; ?>" class="form-control" placeholder="Ingresar email">
+                <input type="email" id="correo_electronico" name="correo_electronico" value="<?php echo $proveedor['correo_electronico']; ?>" class="form-control" placeholder="Ingresar email" required>
                 <div class="invalid-feedback">Por favor ingrese el email.</div>
             </div>
 
             <div class="form-group">
                 <label for="telefono">Telefono</label>
-                <input type="text" id="telefono" name="telefono" value="<?php echo $proveedor['telefono']; ?>" class="form-control" placeholder="Ingresar telefono">
+                <input type="text" id="telefono" name="telefono" value="<?php echo $proveedor['telefono']; ?>" class="form-control" placeholder="Ingresar telefono" required>
                 <div class="invalid-feedback">Por favor ingrese el telefono.</div>
             </div>
 
@@ -223,13 +171,13 @@ _empresa" name="nombre_empresa" value="<?php echo $proveedor['nombre_empresa']; 
 
             <div class="form-group">
                 <label for="descripcion">Descripcion</label>
-                <textarea id="descripcion" name="descripcion" class="form-control" placeholder="Descripcion"><?php echo $proveedor['descripcion']; ?></textarea>
+                <textarea id="descripcion" name="descripcion" class="form-control" placeholder="Descripcion" required><?php echo $proveedor['descripcion']; ?></textarea>
                 <div class="invalid-feedback">Por favor ingrese la descripcion.</div>
             </div>
 
             <div class="form-group">
                 <label for="precio">Precio</label>
-                <input type="number" id="precio" name="precio" value="<?php echo $proveedor['precio']; ?>" class="form-control" placeholder="Precio">
+                <input type="number" id="precio" name="precio" value="<?php echo $proveedor['precio']; ?>" class="form-control" placeholder="Precio" required>
                 <div class="invalid-feedback">Por favor ingrese el precio</div>
             </div>
 
@@ -239,7 +187,7 @@ _empresa" name="nombre_empresa" value="<?php echo $proveedor['nombre_empresa']; 
                 <div class="invalid-feedback">Por favor seleccione el archivo.</div>
             </div>
 
-            <button type="submit" name="boton" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
     </div>
 </div>

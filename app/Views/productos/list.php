@@ -1,10 +1,13 @@
 
 <?php
 
-require_once ("../../Controllers/ProveedorController.php");
-require_once("../../Models/ProveedorModel.php");
+
+require_once ("../../Controllers/ProductoController.php");
+require_once("../../Models/ProductoModel.php");
 
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -52,32 +55,20 @@ require_once("../../Models/ProveedorModel.php");
     </style>
 </head>
 <body>
-    <div class="container">
+  
+
+<div class="container">
         <div id="form-background">
             <form action="list.php?da=2" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 <div class="form-group">
-                    <label for="nombre_empresa">Nombre de la empresa</label>
-                    <input type="text" id="nombre_empresa" name="nombre_empresa" class="form-control" required placeholder="Ingresar nombre proveedor">
-                    <div class="invalid-feedback">Por favor ingrese el nombre del proveedor.</div>
+                    <label for="nombre_empresa">Nombre del producto</label>
+                    <input type="text" id="nombre" name="nombre" class="form-control" required placeholder="Ingresar nombre ">
+                    <div class="invalid-feedback">Por favor ingrese el nombre del producto.</div>
                 </div>
 
-                <div class="form-group">
-                    <label for="direccion">Direccion</label>
-                    <input type="text" id="direccion" name="direccion" class="form-control" required placeholder="Ingresar direccion">
-                    <div class="invalid-feedback">Por favor ingrese la direccion.</div>
-                </div>
+              
 
-                <div class="form-group">
-                    <label for="correo_electronico">Correo electrónico</label>
-                    <input type="email" id="correo_electronico" name="correo_electronico" class="form-control" required placeholder="Ingresar email">
-                    <div class="invalid-feedback">Por favor ingrese el email.</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="tel">Telefono</label>
-                    <input type="text" id="telefono" name="telefono" class="form-control" required placeholder="Ingresar telefono">
-                    <div class="invalid-feedback">Por favor ingrese telefono.</div>
-                </div>
+              
 
                 <label for="categoria_productos"><i class="fas fa-users"></i> Categoria:</label>
                 <select id="categoria_productos" name="categoria_productos" required class="form-control">
@@ -101,12 +92,7 @@ require_once("../../Models/ProveedorModel.php");
                     <div class="invalid-feedback">Por favor ingrese el precio</div>
                 </div>
 
-                <div class="form-group">
-                    <label for="archivo">Archivo</label>
-                    <input type="file" id="archivo" name="archivo" class="form-control-file" required>
-                    <div class="invalid-feedback">Por favor seleccione el archivo.</div>
-                </div>
-
+            
                 <button type="submit" name="boton" class="btn btn-primary">Guardar</button>
             </form>
         </div>
@@ -118,3 +104,4 @@ require_once("../../Models/ProveedorModel.php");
     </script>
 </body>
 </html>
+

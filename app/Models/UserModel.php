@@ -50,7 +50,7 @@ return $resultado;
                      "Reply-To: tuemail@tudominio.com" . "\r\n" .
                      "X-Mailer: PHP/" . phpversion();
 
-        return mail($email, $asunto, $mensaje, $cabeceras);
+        return mail ($asunto, $mensaje, $cabeceras);
     }
 
     public function generarTokenRecuperacion() {

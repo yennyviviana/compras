@@ -7,7 +7,7 @@ require_once('Controllers/SentenciaController.php');
 //echo $_SESSION['usuario'];
 if(isset($_SESSION['usuario']) && $_SESSION['usuario'] != "") {
     $con_usuario = "SELECT * FROM usuarios WHERE id_usuario = ".$_SESSION['usuario'];
-    $resultado = new Sentencia($con_usuario, $conexion, $sentencia, $resultado,'usuarios');
+    $resultado = new SentenciaController($con_usuario, $conexion, $sentencia, $resultado,'usuarios');
     $resultado->ejecutarConsulta();
     
     $usuario = mysqli_fetch_array($resultado->resultado);

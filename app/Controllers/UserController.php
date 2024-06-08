@@ -15,19 +15,20 @@ class  UserController {
         include 'index.php';
     }
 
-
-public function iniciarSesion($correo_electronico, $contrasena) {
-    $usuarioValido = $this->UserModel->validarCredenciales($correo_electronico, $contrasena);
-    if ($usuarioValido) {
-        // Iniciar sesión y redirigir al usuario a la página principal
-        $_SESSION['usuario'] = $correo_electronico; // Guardamos solo el correo electrónico del usuario en la sesión
-        echo json_encode(array("success" => true, "message" => "Inicio de sesión exitoso"));
-    } else {
-        // Devolver un mensaje de error
-       // echo json_encode(array("success" => false, "message" => "Error: Credenciales inválidas"));
+    public function iniciarSesion($correo_electronico, $contrasena) {
+        // Verificar si el usuario existe en la base de datos
+        $usuarioValido = $this->UserModel->validarCredenciales($correo_electronico, $contrasena);
+        if ($usuarioValido) {
+            // Iniciar sesión y redirigir al usuario a la página principal
+            $_SESSION['usuario'] = $correo_electronico; // Guardamos solo el correo electrónico del usuario en la sesión
+            echo json_encode(array("success" => true, "message" => "Inicio de sesión exitoso"));
+        } else {
+            // Devolver un mensaje de error
+            echo json_encode(array("success" => false, "message" => "Error: Credenciales inválidas"));
+        }
     }
-}
-
+    
+    
 
     public function mostrarFormularioRegistro() {
         // Aquí cargas la vista del formulario de registro
@@ -61,11 +62,10 @@ public function iniciarSesion($correo_electronico, $contrasena) {
     }
     
 
-public function mostrarUsuarios() {
-   
+    public function mostrarUsuarios() {
         // Verificar si se ha iniciado sesión
         if (!isset($_SESSION['usuario'])) {
-           // echo "Debe iniciar sesión para ver esta página.";
+            echo "Debe iniciar sesión para ver esta página.";
             return;
         }
     
@@ -78,8 +78,7 @@ public function mostrarUsuarios() {
         echo "<li>Usuario 3</li>";
         echo "</ul>";
     }
-    
-}
+}    
 
     
 ?>

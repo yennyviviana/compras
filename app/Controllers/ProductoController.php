@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../Models/ProveedorModel.php';
+require_once __DIR__ . '/../Models/ProductoModel.php';
 require_once __DIR__ . '/../Config/db.php';
 
 if(isset($_POST['boton'])) {
@@ -9,24 +9,21 @@ if(isset($_POST['boton'])) {
         die("Error al conectar con la base de datos: " . mysqli_connect_error());
     }
 
-    $modelo = new ProveedorModel($conexion);
+    $modelo = new ProductoModel($conexion);
 
-    $nombre_empresa = $_POST['nombre_empresa'];
-    $direccion = $_POST['direccion'];
-    $correo_electronico = $_POST['correo_electronico'];
-    $telefono = $_POST['telefono'];
+    $nombre = $_POST['nombre'];
     $categoria_productos = $_POST['categoria_productos'];
     $descripcion = $_POST['descripcion'];
     $precio = $_POST['precio'];
-    $archivo = $_FILES['archivo'];
+   
 
-    $resultado = $modelo->insertarProveedor($nombre_empresa, $direccion, $correo_electronico, $telefono, $categoria_productos, $descripcion, $precio, $archivo);
+    $resultado = $modelo->insertarProducto($nombre, $descripcion, $precio,$categoria_productos);
 
     if ($resultado) {
         // Inserción exitosa, redirigir a alguna página o mostrar un mensaje
         header("Location: list.php?da=2");
     } else {
-        echo "Error al insertar el proveedor.";
+        echo "Error al insertar el producto.";
     }
 
     mysqli_close($conexion);

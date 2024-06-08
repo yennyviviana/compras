@@ -73,21 +73,17 @@
     </style>
 </head>
 <body>
-    <div class="panel">
-        <div class="column">
-            <h2>Módulo de Compras</h2>
-            <ul class="nav">
-                <li><i class="fas fa-plus icon"></i><a href="create.php">Nuevo Proveedor</a></li>
-                <li><i class="fas fa-edit icon"></i><a href="list.php">Insertar Proveedor</a></li>
-                <li><i class="fas fa-trash-alt icon"></i><a href="delete.php">Eliminar Proveedor</a></li>
-            </ul>
-        </div>
-        <div class="column">
-            <button class="btn" name="botonc" type="button" onclick="document.location='list.php?da=2'">
-                <i class="fas fa-plus"></i> Ingresar nuevo proveedor
-            </button>
-        </div>
+
+<div class="panel">
+    <div class="column">
+        <h2>Módulo de Compras</h2>
+        <ul class="nav">
+            <li><i class="fas fa-plus icon"></i><a href="list.php?da=2">Nuevo Proveedor</a></li>
+            
+        </ul>
     </div>
+</div>
+
 
     <table class="table">
   <thead>
@@ -104,7 +100,7 @@
       <th></th>
       <th></th>
     </tr>
-		
+		        
     </thead>
     <tbody>
         <?php
@@ -144,36 +140,47 @@
                 <td>$ <?php echo number_format($proveedor['precio'], 2, ',', '.'); ?></td>
                 <td><img src="../../public/img/proveedores/<?php echo $proveedor['archivo']; ?>" width="100" alt=""></td>
 
-                <td>
+               
                
                 <td>
+                  <!-- Botón para ediyj  -->  
                 <a href="edit.php?da=3&lla=<?php echo $proveedor['id_proveedor']; ?>" class="btn btn-primary">
-                          <i class="fas fa-edit"></i> Editar
-</a>
-<a href="delete.php?da=4&lla=<?php echo $proveedor['id_proveedor']; ?>" class="btn btn-primary">
-                          <i class="fas fa-edit"></i> Borrar
+    <i class="fas fa-pencil-alt"></i> Editar
 </a>
 
-
+<!-- Botón de Borrar  -->
+<a href="#" class="btn btn-danger" onclick="borrarProveedor(<?php echo $proveedor['id_proveedor']; ?>)">
+    <i class="fas fa-trash-alt"></i> Borrar
+</a>
 
 <script>
-$(document).ready(function() {
-    $(".delete-btn").click(function() {
-        var id = $(this).data("id");
-        if (confirm("¿Estás seguro de que deseas borrar este elemento?")) {
-            $.ajax({
-                type: "POST",
-                url: "borrar_elemento.php",
-                data: { id: id },
-                success: function(response) {
-                    // Manejar la respuesta del servidor, como actualizar la interfaz de usuario
-                    // Puedes eliminar la fila de la tabla correspondiente si se elimina correctamente
+function borrarProveedor(id) {
+    if (confirm('¿Está seguro de borrar el proveedor?')) {
+        // Realizar una petición AJAX para borrar el proveedor
+        var xhr = new XMLHttpRequest();
+        
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Éxito en la eliminación del proveedor
+                    alert('Proveedor eliminado correctamente.');
+                    // Recargar la página para reflejar los cambios
+                    location.reload();
+                } else {
+                    // Error al eliminar el proveedor
+                    alert('Error al eliminar el proveedor.');
                 }
-            });
-        }
-    });
-});
-</script
+            }
+        };
+        
+        // Configurar la petición AJAX
+        xhr.open('GET', 'delete.php?da=4&lla=' + id, true);
+        // Enviar la petición
+        xhr.send();
+    }
+}
+</script>
+
             </tr>
             <?php
         }

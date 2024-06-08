@@ -24,8 +24,8 @@
 </div>
         </div>
         <ul class="nav">
-            <li><a href="Views/proveedores/create.php">Proveedores</a></li>
-            <li><a href="Views/productos/producto.php?da=2">Productos</a></li>
+            <li><a href="Views/proveedores/create.php?da=1">Proveedores</a></li>
+            <li><a href="Views/productos/create.php?da=1">Productos</a></li>
             <li><a href="Views/carritoCompras/carrito.php">Carrito de Compras</a></li>
             <li><a href="Views/elementosCarrito/elementos.php">Elementos de compra </a></li>
             <li><a href="Views/usuarios/usuario.php">Usuarios </a></li>

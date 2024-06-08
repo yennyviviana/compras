@@ -1,6 +1,5 @@
 <?php
 require_once('Config/db.php');
-require_once('routes.php');
 ?>
 
 <!DOCTYPE html>
@@ -29,8 +28,8 @@ require_once('routes.php');
 <!-- Formulario de Login -->
 <form action="main.php" method="POST" class="form-background" id="loginForm">
     <h2><i class="fas fa-key"></i> Modulo  compras.</h2> 
-    <label for="correo_electronico"><i class="fa fa-envelope"></i>Correo Electrónico:</label>
-        <input type="email" id="correo_electronico" name="correo_electronico" required>
+    <label for="nombre_usuario"><i class="fa fa-envelope"></i>Usuario:</label>
+        <input type="text" id="nombre_ausuario" name="nombre_usuario" required>
 
 
     <label for="contrasena"><i class="fas fa-lock"></i> Contraseña:</label>
@@ -88,5 +87,4 @@ require_once('routes.php');
 
 </body>
 </html>
-
 
