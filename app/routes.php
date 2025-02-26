@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Llamada al método iniciarSesion
 else if (isset($_POST['submit_login'])) {
-    $correo_electronico = $_POST['correo_electronico'];
+    $nombre_usuario= $_POST['nombre_usuario'];
     $contrasena = $_POST['contrasena'];
     $userController->login($correo_electronico, $contrasena);
 }
